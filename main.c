@@ -9,11 +9,12 @@
  *      into projects.
  * 
  */
+#define KMM_PLATFORM_WINDOWS
 
 #include <stdio.h>
 #include <assert.h>
 #include <time.h> // https://create.stephan-brumme.com/windows-and-linux-code-timing/
-#include "kmemory.h"
+#include "kmm/kmemory.h"
 
 int main()
 {
@@ -25,7 +26,7 @@ int main()
     void* heap_allocation = NULL;
     int32_t ltheap_res = kmm_alloc(&heap_allocation, kmm_gigabytes(2), kmm_terabytes(2));
     assert(ltheap_res); // Ensure that we the heap size we requested.
-    printf("Allocation of %luKb (%luMb) was successful.\n", kmm_gigabytes(2)/1024, kmm_gigabytes(2)/(1024*1024));
+    printf("Allocation of %lluKb (%lluMb) was successful.\n", kmm_gigabytes(2)/1024, kmm_gigabytes(2)/(1024*1024));
 
     /**
      * Post-runtime cleanup. Yes, it's that easy.

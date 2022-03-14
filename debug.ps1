@@ -1,0 +1,1 @@
+devenv ./build/kmem.sln -Project ./build/kmem.vcxproj

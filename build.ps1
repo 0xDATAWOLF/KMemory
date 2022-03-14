@@ -1,0 +1,1 @@
+msbuild ./build/kmem.sln
