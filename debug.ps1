@@ -1,1 +1,1 @@
-devenv ./build/kmem.sln -Project ./build/kmem.vcxproj
+devenv ./bin/Debug/kmem.exe

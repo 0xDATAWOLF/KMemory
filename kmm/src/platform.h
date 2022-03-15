@@ -5,33 +5,40 @@
  */
 #ifndef KMM_PLATFORM_H
 #define KMM_PLATFORM_H
+#include <stdint.h>
 
 /**
- * Catch error if platform is defined improperly.
+ * Catch error if platform is defined improperly. We want to ensure that the user designates
+ * the proper platform at compile time such that we know which memory management library to use
+ * for memory allocations.
  */
 #if defined(KMM_PLATFORM_WINDOWS) && defined(KMM_PLATFORM_UNIX)
 #	error "Only one platform may be specified at a time"
-#endif
-
-/**
- * Catch errors if no platform is defined.
- */
+#endif 
 #if !defined(KMM_PLATFORM_WINDOWS) && !defined(KMM_PLATFORM_UNIX)
 #	error "A platform must be specified before including kmemory.h"
 #endif
 
 /**
- * Get the headers required for Windows.
+ * We are declaring the platform functions. Definitions are found in their respective platform
+ * header files. This reduces the complexity the library's implementation by middle-manning
+ * OS-specific calls.
  */
-#if defined(KMM_PLATFORM_WINDOWS)
-#	include <windows.h>
-#endif
+
+int32_t platform_valloc(void** store, size_t size, size_t vaddr, uint32_t flags);
+int32_t platform_free(void* store);
 
 /**
- * Get the headers required for Linux.
+ * Get the headers required for each platform. We are including the system libraries first in-case we
+ * need them, then we are including the platforms' abstracted call implementations to supply the proper
+ * definitions for the functions needed by the library.
  */
+#if defined(KMM_PLATFORM_WINDOWS)
+#	include "platform/win32.h"
+#endif
+
 #if defined(KMM_PLATFORM_UNIX)
-#	include <sys/mman.h>
+#	include "platform/unix.h"
 #endif
 
 #endif
